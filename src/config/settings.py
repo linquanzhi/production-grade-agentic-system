@@ -154,6 +154,18 @@ class Settings:
         self.MAX_TOKENS = int(os.getenv("MAX_TOKENS", "2000"))
         self.MAX_LLM_CALL_RETRIES = int(os.getenv("MAX_LLM_CALL_RETRIES", "3"))
 
+        # Qwen Configuration
+        self.QWEN_API_KEY = os.getenv("QWEN_API_KEY", "")
+        self.QWEN_BASE_URL = os.getenv("QWEN_BASE_URL", "https://dashscope.aliyuncs.com/compatible-mode/v1")
+
+        # Doubao Configuration
+        self.DOUBAO_API_KEY = os.getenv("DOUBAO_API_KEY", "")
+        self.DOUBAO_BASE_URL = os.getenv("DOUBAO_BASE_URL", "https://ark.cn-beijing.volces.com/api/v3")
+
+        # DeepSeek Configuration
+        self.DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY", "")
+        self.DEEPSEEK_BASE_URL = os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com/v1")
+
         # Long term memory Configuration
         self.LONG_TERM_MEMORY_MODEL = os.getenv("LONG_TERM_MEMORY_MODEL", "gpt-5-nano")
         self.LONG_TERM_MEMORY_EMBEDDER_MODEL = os.getenv("LONG_TERM_MEMORY_EMBEDDER_MODEL", "text-embedding-3-small")

@@ -89,6 +89,76 @@ class LLMRegistry:
                 top_p=0.9 if settings.ENVIRONMENT == Environment.PRODUCTION else 0.8,
             ),
         },
+        {
+            "name": "qwen-turbo",
+            "llm": ChatOpenAI(
+                model="qwen-turbo",
+                api_key=settings.QWEN_API_KEY,
+                base_url=settings.QWEN_BASE_URL,
+                temperature=settings.DEFAULT_LLM_TEMPERATURE,
+                max_tokens=settings.MAX_TOKENS,
+            ),
+        },
+        {
+            "name": "qwen-plus",
+            "llm": ChatOpenAI(
+                model="qwen-plus",
+                api_key=settings.QWEN_API_KEY,
+                base_url=settings.QWEN_BASE_URL,
+                temperature=settings.DEFAULT_LLM_TEMPERATURE,
+                max_tokens=settings.MAX_TOKENS,
+            ),
+        },
+        {
+            "name": "qwen-max",
+            "llm": ChatOpenAI(
+                model="qwen-max",
+                api_key=settings.QWEN_API_KEY,
+                base_url=settings.QWEN_BASE_URL,
+                temperature=settings.DEFAULT_LLM_TEMPERATURE,
+                max_tokens=settings.MAX_TOKENS,
+            ),
+        },
+        {
+            "name": "deepseek-chat",
+            "llm": ChatOpenAI(
+                model="deepseek-chat",
+                api_key=settings.DEEPSEEK_API_KEY,
+                base_url=settings.DEEPSEEK_BASE_URL,
+                temperature=settings.DEFAULT_LLM_TEMPERATURE,
+                max_tokens=settings.MAX_TOKENS,
+            ),
+        },
+        {
+            "name": "deepseek-reasoner",
+            "llm": ChatOpenAI(
+                model="deepseek-reasoner",
+                api_key=settings.DEEPSEEK_API_KEY,
+                base_url=settings.DEEPSEEK_BASE_URL,
+                temperature=settings.DEFAULT_LLM_TEMPERATURE,
+                max_tokens=settings.MAX_TOKENS,
+            ),
+        },
+        {
+            "name": "doubao-seed-1-8-251228",
+            "llm": ChatOpenAI(
+                model="doubao-seed-1-8-251228",
+                api_key=settings.DOUBAO_API_KEY,
+                base_url=settings.DOUBAO_BASE_URL,
+                temperature=settings.DEFAULT_LLM_TEMPERATURE,
+                max_tokens=settings.MAX_TOKENS,
+            ),
+        },
+        {
+            "name": "doubao-lite-4k",
+            "llm": ChatOpenAI(
+                model="doubao-lite-4k",
+                api_key=settings.DOUBAO_API_KEY,
+                base_url=settings.DOUBAO_BASE_URL,
+                temperature=settings.DEFAULT_LLM_TEMPERATURE,
+                max_tokens=settings.MAX_TOKENS,
+            ),
+        },
     ]
 
     @classmethod
@@ -112,16 +182,33 @@ class LLMRegistry:
                 model_entry = entry
                 break
 
+        # If user provides kwargs, create a new instance with those args
+        if kwargs:
+            logger.debug("creating_llm_with_custom_args", model_name=model_name, custom_args=list(kwargs.keys()))
+
+            # Determine provider specific settings
+            provider_kwargs = {}
+            if model_name.startswith("qwen"):
+                provider_kwargs["api_key"] = settings.QWEN_API_KEY
+                provider_kwargs["base_url"] = settings.QWEN_BASE_URL
+            elif model_name.startswith("doubao"):
+                provider_kwargs["api_key"] = settings.DOUBAO_API_KEY
+                provider_kwargs["base_url"] = settings.DOUBAO_BASE_URL
+            elif model_name.startswith("deepseek"):
+                provider_kwargs["api_key"] = settings.DEEPSEEK_API_KEY
+                provider_kwargs["base_url"] = settings.DEEPSEEK_BASE_URL
+            else:
+                provider_kwargs["api_key"] = settings.OPENAI_API_KEY
+
+            # Merge provider settings with user overrides
+            final_kwargs = {**provider_kwargs, **kwargs}
+            return ChatOpenAI(model=model_name, **final_kwargs)
+
         if not model_entry:
             available_models = [entry["name"] for entry in cls.LLMS]
             raise ValueError(
                 f"model '{model_name}' not found in registry. available models: {', '.join(available_models)}"
             )
-
-        # If user provides kwargs, create a new instance with those args
-        if kwargs:
-            logger.debug("creating_llm_with_custom_args", model_name=model_name, custom_args=list(kwargs.keys()))
-            return ChatOpenAI(model=model_name, api_key=settings.OPENAI_API_KEY, **kwargs)
 
         # Return the default instance
         logger.debug("using_default_llm_instance", model_name=model_name)

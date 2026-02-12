@@ -1,0 +1,29 @@
+```gitignore
+# Dependencies
+node_modules/
+
+```gitignore
+# Build outputs
+*.pyc
+__pycache__/
+```
+dist/
+build/
+out/
+
+# Environment variables
+.env
+*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+```
