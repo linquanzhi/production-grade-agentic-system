@@ -8,5 +8,9 @@ and other external integrations.
 from langchain_core.tools.base import BaseTool
 
 from .duckduckgo_search import duckduckgo_search_tool
+from .ragflow_retriever import query_knowledge_base
 
-tools: list[BaseTool] = [duckduckgo_search_tool]
+tools: list[BaseTool] = [
+    duckduckgo_search_tool,
+    query_knowledge_base,
+]

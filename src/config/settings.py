@@ -166,6 +166,11 @@ class Settings:
         self.DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY", "")
         self.DEEPSEEK_BASE_URL = os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com/v1")
 
+        # RAGFlow Configuration
+        self.RAGFLOW_API_KEY = os.getenv("RAGFLOW_API_KEY", "")
+        self.RAGFLOW_BASE_URL = os.getenv("RAGFLOW_BASE_URL", "http://your-ragflow-server/api/v1")
+        self.RAGFLOW_CHAT_ID = os.getenv("RAGFLOW_CHAT_ID", "")
+
         # Long term memory Configuration
         self.LONG_TERM_MEMORY_MODEL = os.getenv("LONG_TERM_MEMORY_MODEL", "gpt-5-nano")
         self.LONG_TERM_MEMORY_EMBEDDER_MODEL = os.getenv("LONG_TERM_MEMORY_EMBEDDER_MODEL", "text-embedding-3-small")
